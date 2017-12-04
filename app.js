@@ -17,13 +17,13 @@ var con = mysql.createConnection({
     host: 'localhost',
 	user: 'root',
     password : '',
-    port: 3306,
+    port: 8889,
     database: 'pictureme'
 });
 
 app.set('view engine', 'ejs');
 
-app.get('/connexion', function (req, res) {
+app.get('/', function (req, res) {
      app.use(express.static(__dirname+'/ressources'));
       res.render('connexion',{qs:req.query});
 });

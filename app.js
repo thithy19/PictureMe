@@ -1,6 +1,7 @@
 var http = require('http');
 var url = require('url');
 var fs = require('fs');
+var fsExtra = require('fs-extra');
 var ejs = require('ejs');
 var mysql = require('mysql');
 var express = require('express');
@@ -11,12 +12,13 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcryptjs');
 var expressValidator = require('express-validator');
+var formidable = require('formidable');
+var path = require("path");
 app.use(expressValidator());
 app.use(passport.initialize());
 app.use(passport.session());
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false});
-
 var User = require('./models/user');
 
 app.use(bodyParser.json()); // support json encoded bodies
@@ -26,7 +28,7 @@ var con = mysql.createConnection({
     host: 'localhost',
 	user: 'root',
     password : '',
-    port: 3306,
+    port: 8889,
     database: 'pictureme'
 });
 
@@ -165,4 +167,45 @@ app.post('/connexion',
      app.use(express.static(__dirname+'/ressources'));
       console.log(req.body);
       res.render('accueil',{qs:req.query});
+});
+
+app.post('/upload',function (req, res) {
+        var form = new formidable.IncomingForm();
+        form.parse(req, function (err, fields, files) {
+            res.writeHead(200, {'content-type': 'text/plain'});
+            res.write('received upload:\n\n');
+            res.end(util.inspect({fields: fields, files: files}));
+        });
+        form.on('fileBegin', function(name, file) {
+        file.path = path.join(__dirname, '/temp/') + file.name;
+		});
+        form.on('progress', function(bytesReceived, bytesExpected) {
+        var percent_complete = (bytesReceived / bytesExpected) * 100;
+        console.log(percent_complete.toFixed(2));
+		});
+        form.on('end', function (fields, files) {
+            /* Temporary location of our uploaded file */
+            var temp_path = this.openedFiles[0].path;
+            /* The file name of the uploaded file */
+            var file_name = this.openedFiles[0].name;
+            /* Location where we want to copy the uploaded file */
+            var new_location = path.join(__dirname, '/upload/');
+            fsExtra.copy(temp_path, new_location + file_name, function (err) {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log("success!");
+                    // Delete the "temp" file
+					fsExtra.unlink(temp_path, function(err) {
+					if (err) {
+						console.error(err);
+						console.log("TROUBLE deletion temp !");
+						} else {
+						console.log("success deletion temp !");
+						}
+					});      
+                }
+            });        
+        });
+        return;
 });

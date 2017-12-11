@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/SebastienBourdin/ChronoFrise/issues"
   },
-  "homepage": "https://github.com/SebastienBourdin/ChronoFrise#readme"
+  "homepage": "https://github.com/SebastienBourdin/ChronoFrise#readme",
+  "passport": "*",
+  "passport-http": "*",
+  "passport-local": "*"
 }

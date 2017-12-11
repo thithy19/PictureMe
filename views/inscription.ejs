@@ -14,6 +14,7 @@
 		<title>Inscription</title>
 	</head>
 	<body>
+	<form class="form" role="form" method="post" action="/inscription" accept-charset="UTF-8" id="login-nav">
 		<div class="container">
 			<div class="row main">
 				<div class="panel-heading">
@@ -26,7 +27,6 @@
                 </div> 
                 <p>
 				<div class="main-login main-center">
-					<form class="form-horizontal" method="post" action="/accueil">
 						
 						<div class="form-group">
 							<label for="name" class="cols-sm-2 control-label">Votre nom</label>
@@ -69,16 +69,17 @@
 						</div>
 
 						<div class="form-group ">
-							<button type="button" class="btn btn-primary btn-lg btn-block login-button">Enregistrer</button>
+							<input type="submit" class="btn btn-primary btn-lg btn-block login-button">Enregistrer</input>
 						</div>
 						<div class="login-register">
 				            <a href="/">Dejà un compte?</a>
 				         </div>
-					</form>
+					
 				</div>
 			</div>
 		</div>
 
 		<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</form>
 	</body>
 </html>

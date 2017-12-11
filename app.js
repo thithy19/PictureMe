@@ -123,24 +123,30 @@ passport.use(new LocalStrategy({
     passReqToCallBack: true
 }, function(email, password, done) {
    User.getUserByEmail(email, function(err, userPassword, userEmail){
-   	if(err) throw err;
-    console.log('userEmail =' + userEmail);
-    console.log('userPassword =' + userPassword);
-   	if(!userEmail){
-        console.log('!userEmail ' + userEmail);
-   		return done(null, false);
-   	}
+    if(userPassword && userEmail)
+    {
+        console.log("OK");
+        if(err) throw err;
+        console.log('userEmail =' + userEmail);
+        console.log('userPassword =' + userPassword);
+        if(!userEmail){
+            console.log('!userEmail ' + userEmail);
+            return done(null, false);
+        }
 
-   	User.comparePassword(password, userPassword, function(err, isMatch){
-   		if(err) throw err;
-   		if(isMatch){
-            console.log("Ca match ! ");
-   			return done(null, userEmail);
-   		} else {
-            console.log("Ca match pas !!!!!! ");
-   			return done(null, false);
-   		}
-   	});
+        User.comparePassword(password, userPassword, function(err, isMatch){
+            if(err) throw err;
+            if(isMatch){
+                console.log("Ca match ! ");
+                return done(null, userEmail);
+            } else {
+                console.log("Ca match pas !!!!!! ");
+                return done(null, false);
+            }
+        });
+    }else{
+        console.log("Erreur");
+    }
    });
   }));
 

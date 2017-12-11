@@ -35,9 +35,13 @@ module.exports.getUserById = function(id, callback){
 
 module.exports.getUserByEmail = function(email, callback){
     con.query("SELECT * FROM utilisateur WHERE AdresseMail = '"+email+"'", function (err, result) {
-        if (err) throw err;
-        console.log("email trouvé");
-        callback(null, result[0].MotDePasse, result[0].AdresseMail);
+        if(result[0] != null)
+        {
+            if (err) throw err;
+            console.log("email trouvé!!!");
+            callback(null, result[0].MotDePasse, result[0].AdresseMail);
+        }
+        callback(null, null, null);
     });    
 }
 

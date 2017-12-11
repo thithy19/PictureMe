@@ -25,5 +25,9 @@
   "homepage": "https://github.com/SebastienBourdin/ChronoFrise#readme",
   "passport": "*",
   "passport-http": "*",
-  "passport-local": "*"
+  "passport-local": "*",
+  "express-handlebars": "*",
+  "express-messages": "*",
+  "express-session": "*",
+  "express-validator": "*"
 }

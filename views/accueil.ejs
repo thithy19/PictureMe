@@ -14,8 +14,13 @@
             <h1>Bienvenue sur pIcTuReMe</h1>
             <h3>Partagez vos photos avec vos amis</h3>
            
-            <p> 
-            </p>
+            <form action="/upload" enctype="multipart/form-data" method="post">
+              <input type="text" name="title" class="form-control" placeholder="Titre de la photo">
+              <input type="file" name="upload" multiple="multiple"><br>
+              <div class="form-group">
+                <button class="btn btn-lg btn-primary btn-block" type="submit" value="Upload">Publier</button>
+              </div>
+            </form>'
 
 </body>
 </html>

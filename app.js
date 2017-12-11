@@ -29,7 +29,7 @@ app.get('/', function (req, res) {
 });
 
 
-app.post('/connexion',urlencodedParser, function (req, res) {
+app.get('/connexion',urlencodedParser, function (req, res) {
      app.use(express.static(__dirname+'/ressources'));
       console.log(req.body);
       res.render('connexion-success',{qs:req.query});

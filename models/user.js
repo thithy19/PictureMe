@@ -5,7 +5,7 @@ var con = mysql.createConnection({
     host: 'localhost',
 	user: 'root',
     password : '',
-    port: 8889,
+    port: 3306,
     database: 'pictureme'
 });
 
@@ -39,9 +39,10 @@ module.exports.getUserByEmail = function(email, callback){
         {
             if (err) throw err;
             console.log("email trouvé!!!");
-            callback(null, result[0].MotDePasse, result[0].AdresseMail);
+            callback(null, result[0]);
+        }else{
+            callback(null, null);
         }
-        callback(null, null, null);
     });    
 }
 

@@ -28,7 +28,7 @@ var con = mysql.createConnection({
     host: 'localhost',
 	user: 'root',
     password : '',
-    port: 8889,
+    port: 3306,
     database: 'pictureme'
 });
 
@@ -40,35 +40,29 @@ app.get('/', function (req, res) {
 });
 
 
-// app.post('/connexion',urlencodedParser, function (req, res) {
-//      app.use(express.static(__dirname+'/ressources'));
-//       console.log(req.body);
-//       res.render('accueil',{qs:req.query});
-// });
+app.post('/accueil',
+    passport.authenticate('local', { failWithError: true }),
+    function(req, res, next) {
+        // handle success
+        
+        User.getUserByEmail(req.body.email, function(err, user){
+            console.log("ENFIN!!!!!!!! "+req.body.email);
+            res.render('accueil', {user: user});
+        });
+        
+    },
+    function(err, req, res, next) {
+        // handle error
+        return res.render('inscription');
+    }
+);
+     
+
+     
 
 app.get('/accueil', function (req, res) {
      app.use(express.static(__dirname+'/ressources'));
-         res.render('accueil',{qs:req.query});
-});
-     
-app.post('/accueil', urlencodedParser, function (req, res) {
-     app.use(express.static(__dirname+'/ressources'));
-     console.log(req.body);
-      res.render('connexion-success',{qs:req.query});
-});
-     
-
-
-
-app.get('/accueil', function (req, res) {
-     app.use(express.static(__dirname+'/ressources'));
-          var utilisateurs=[];
-    con.query("SELECT * FROM utilisateur", function (err, result) {
-    if (err)
-        throw err;
-    utilisateurs=result;
-    res.render('accueil', {utilisateurs});
-    });    
+     res.render('accueil');
 });
      
 
@@ -124,30 +118,31 @@ passport.use(new LocalStrategy({
     passwordField: 'password',
     passReqToCallBack: true
 }, function(email, password, done) {
-   User.getUserByEmail(email, function(err, userPassword, userEmail){
-    if(userPassword && userEmail)
+   User.getUserByEmail(email, function(err, user){
+       console.log("je passe ici");
+    if(user.AdresseMail && user.MotDePasse)
     {
         console.log("OK");
         if(err) throw err;
-        console.log('userEmail =' + userEmail);
-        console.log('userPassword =' + userPassword);
-        if(!userEmail){
-            console.log('!userEmail ' + userEmail);
+        console.log('user.AdresseMail =' + user.AdresseMail);
+        console.log('user.MotDePasse =' + user.MotDePasse);
+        if(!user.AdresseMail){
+            console.log('!userEmail ' + user.AdresseMail);
             return done(null, false);
         }
 
-        User.comparePassword(password, userPassword, function(err, isMatch){
+        User.comparePassword(password, user.MotDePasse, function(err, isMatch){
             if(err) throw err;
             if(isMatch){
-                console.log("Ca match ! ");
-                return done(null, userEmail);
+                console.log("Ca match !!!!!!!!!!!!! ");
+                return done(null, user.AdresseMail);
             } else {
                 console.log("Ca match pas !!!!!! ");
                 return done(null, false);
             }
         });
     }else{
-        console.log("Erreur");
+        return done(null, false);;
     }
    });
   }));
@@ -162,12 +157,27 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-app.post('/connexion',
-  passport.authenticate('local', {successRedirect:'/accueil', failureRedirect:'/connexion', failureFlash: true}), function (req, res) {
+app.get('/connexion', function (req, res) {
      app.use(express.static(__dirname+'/ressources'));
-      console.log(req.body);
-      res.render('accueil',{qs:req.query});
+      res.render('connexion');
 });
+
+app.post('/connexion',
+    passport.authenticate('local', { failWithError: true }),
+    function(req, res, next) {
+        // handle success
+        
+        User.getUserByEmail(req.body.email, function(err, user){
+            console.log("ENFIN!!!!!!!! "+req.body.email);
+            res.redirect('accueil');
+        });
+        
+    },
+    function(err, req, res, next) {
+        // handle error
+        return res.render('inscription');
+    }
+);
 
 app.post('/upload',function (req, res) {
         var form = new formidable.IncomingForm();

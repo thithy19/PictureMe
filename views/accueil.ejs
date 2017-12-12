@@ -7,20 +7,20 @@
         <link rel="stylesheet" href="/script/styleconnexion.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <link rel="stylesheet"  href ="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
-        <link rel="stylesheet" href="/script/style.css" />
+        <link rel="stylesheet" href="/script/style1.css" />
                 
       </head>
     <body>
-            <h1>Bienvenue sur pIcTuReMe</h1>
+            <h1>Bienvenue sur pIcTuReMe <%= user.Nom %></h1>
             <h3>Partagez vos photos avec vos amis</h3>
-           
+           <div class="container">
             <form action="/upload" enctype="multipart/form-data" method="post">
               <input type="text" name="title" class="form-control" placeholder="Titre de la photo">
               <input type="file" name="upload" multiple="multiple"><br>
               <div class="form-group">
                 <button class="btn btn-lg btn-primary btn-block" type="submit" value="Upload">Publier</button>
               </div>
-            </form>'
-
+            </form>
+            </div>
 </body>
 </html>

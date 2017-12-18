@@ -1,0 +1,6 @@
+{
+    "name": "PictureMe",
+    "description": "Partage de photos",
+    "repository": "https://github.com/thithy19/PictureMe",
+    "keywords": ["pictureme", "node", "express", "static"]
+}

@@ -31,5 +31,8 @@
   "express-handlebars": "*",
   "express-messages": "*",
   "express-session": "*",
-  "express-validator": "*"
+  "express-validator": "*",
+  "scripts": {
+    "start": "node app.js"
+  }
 }

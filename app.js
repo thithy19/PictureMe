@@ -32,6 +32,8 @@ var con = mysql.createConnection({
     database: 'pictureme'
 });
 
+app.set('port', (process.env.PORT || 8080));
+
 app.set('view engine', 'ejs');
 // page de connexion 
 app.get('/', function(req, res) {
@@ -105,8 +107,8 @@ app.post('/inscription', function(req, res) {
     }
 });
 
-app.listen(8080, function() {
-    console.log('listening on port 8080!')
+app.listen(app.get('port'), function() {
+    console.log('listening on port '+app.get('port')+'!');
 })
 
 passport.use(new LocalStrategy({

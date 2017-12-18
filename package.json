@@ -32,7 +32,7 @@
   "express-messages": "*",
   "express-session": "*",
   "express-validator": "*",
-  "scripts": {
+  "script": {
     "start": "node app.js"
   }
 }

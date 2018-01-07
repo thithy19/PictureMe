@@ -1,5 +1,5 @@
 # PictureMe
-## Démarche de lancement de projet 
+## Démarche de lancement du projet 
 
 Après avoir télecharger le projet, il faut faire :
 - npm install dans le terminal ain importer toute les modules utulisé dans le projet PictureMe

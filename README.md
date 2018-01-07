@@ -8,4 +8,5 @@ Après avoir télechargé le projet:
   - npm install
   - node app
 - Lancer http://localhost:8080  sur un navigateur (pour des raisons d'efficacité et de performance utiliser le navigateur Chrome)
+
 Penser à importer la base de donées à apartir de votre serveur SQL!

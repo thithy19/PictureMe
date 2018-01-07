@@ -2,6 +2,7 @@
 ## Démarche de lancement du projet 
 
 Après avoir télechargé le projet:
+- Importer la base de données "test.sql"(dossier Ressources) à partir de votre serveur SQL 
 - Ouvrir un terminal 
 - Se placer sur le dossier PictureMe
 - Pour pouvoir lancer le server taper les lignes de commandes suivants :
@@ -9,4 +10,3 @@ Après avoir télechargé le projet:
   - node app
 - Lancer http://localhost:8080  sur un navigateur (pour des raisons d'efficacité et de performance utiliser le navigateur Chrome)
 
-Penser à importer la base de donées à apartir de votre serveur SQL!

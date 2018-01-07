@@ -1,0 +1,84 @@
+<html>
+    <head>
+        <title>Mon profil</title>
+        <meta charset='UTF-8'>
+        <script src='http://code.jquery.com/jquery-1.12.4.min.js'></script>
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css'>
+        <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+		<script src='style.js'></script>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="/script/styleconnexion.css">
+        <link rel="stylesheet" href="/script/style.css" />
+    </head>
+    <body>
+
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+					<div class="container"> 
+					    <div class="navbar-header">
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						    <span class="icon-bar"></span>
+						    <span class="icon-bar"></span>
+						    <span class="icon-bar"></span> 
+						</button>
+						<a target="_blank" href="#" class="navbar-brand"></a>
+					    </div>
+						<ul class="nav navbar-nav navbar-right">
+						    <li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							    <span class="glyphicon glyphicon-user"></span> 
+                                <strong> user.name </strong>
+							    <span class="glyphicon glyphicon-chevron-down"></span>
+							</a>
+							<ul class="dropdown-menu">
+							    <li>
+								<div class="navbar-login">
+								    <div class="row">
+									<div class="col-lg-4">
+									    <p class="text-center">
+									    </p>
+									</div>
+									<div class="col-lg-8">
+									    <p class="text-left small">user.pseudo</p>
+									    
+									</div>
+								    </div>
+								</div>
+							    </li>
+							    <li class="divider"></li>
+							    <li>
+								<div class="navbar-login navbar-login-session">
+								    <div class="row">
+									<div class="col-lg-12">
+									    <p>
+										<a href="/" class="btn btn-danger btn-block">Se deconnecter</a>
+									    </p>
+									</div>
+								    </div>
+								</div>
+							    </li>
+							</ul>
+						    </li>
+						</ul>
+					    </div>
+					</div>
+				    </div>
+<div class = "container">
+<div class="row">    
+        <div class="col-xs-12 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">  
+	<div class="wrapper">
+		
+    <br>
+	<% for(var i=0; i<images.length; i++) { %> <img src="<%= typeof images[i].image != 'undefined' ? images[i].image : '' %>" class="responsive-img">
+	<% } %>
+		<% for(var i=0; i<images.length; i++) { %> <img src="<%= typeof images[i].description != 'undefined' ? images[i].description : '' %>" class="responsive-img"><% } %>
+
+ </div>
+</div>
+  
+ 
+    </body>
+    <footer>
+	<p>© 2017<a style="color:#0a93a6; text-decoration:none;" href="#"></a>.</p>
+ 	</footer>
+</html>

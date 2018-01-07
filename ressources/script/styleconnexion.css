@@ -40,3 +40,8 @@ body {
 h1,h3{
   text-align: center;
 }
+
+.photos{
+	align-items: center;
+}
+

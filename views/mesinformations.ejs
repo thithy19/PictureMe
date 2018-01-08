@@ -7,6 +7,7 @@
         <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css'>
         <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
 		<script src='style.js'></script>
+		        <link rel="stylesheet" href="/script/style1.css">
 		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="/script/styleconnexion.css">
 		<link rel="stylesheet" href="/script/style.css" />
@@ -30,20 +31,20 @@
 
 
 	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-					<div class="container"> 
-					    <div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-						    <span class="icon-bar"></span>
-						    <span class="icon-bar"></span>
-						    <span class="icon-bar"></span> 
-						</button>
-						<a target="_blank" href="#" class="navbar-brand"></a>
-					    </div>
-						<ul class="nav navbar-nav navbar-right">
+		<div class="container"> 
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span> 
+				</button>
+				<a target="_blank" href="#" class="navbar-brand"></a>
+			 </div>
+			 <ul class="nav navbar-nav navbar-right">
 						    <li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							    <span class="glyphicon glyphicon-user"></span> 
-							    <strong> user.name  </strong>
+							    <p class="text-left small"><%= user.pseudo %></p>
 							    <span class="glyphicon glyphicon-chevron-down"></span>
 							</a>
 							<ul class="dropdown-menu">
@@ -51,7 +52,7 @@
 								<div class="navbar-login">
 								    <div class="row">
 									<div class="col-lg-8">
-										<p class="text-left small">user.pseudo</p>
+										<p class="text-left small"><%= user.pseudo %></p>
 									</div>
 								    </div>
 								</div>
@@ -75,15 +76,22 @@
 					</div>
 				    </div>
 
-<div class="mesinfos">
+<div class="mesinfos" >
     <h2>Mes informations</h2>
     <p> 
         <% for(var i=0; i<mesinfos.length; i++) { %>  
 		<b> Nom: <%= typeof mesinfos[i].name != 'undefined' ? mesinfos[i].name : '' %> </b><br>
 		<b> pseudo: <%= typeof mesinfos[i].pseudo != 'undefined' ? mesinfos[i].pseudo : '' %> </b><br>
-		<b> Mail: <%= typeof mesinfos[i].Mail != 'undefined' ? mesinfos[i].Mail : '' %> </b><br>
-		<b> Mesamis: </b><br>
+		<b> Mail: <%= typeof mesinfos[i].mail != 'undefined' ? mesinfos[i].mail : '' %> </b><br>
+		<br>
 		<% } %>
+		<b>
+		<b> Mes amis:   </b> <% for (var i=0 ; i < mesinfos.length; i++){ %>
+		<%=  typeof mesinfos[i].name != 'undefined' ? mesinfos[i].name : '' %>  </a>
+                <%= typeof mesinfos[i].mail != 'undefined' ? mesinfos[i].mail : '' %> 
+				<br>
+				<% } %>
+
     </p>
 </div>
             
@@ -91,7 +99,5 @@
   
  
     </body>
-    <footer>
-	<p>© 2017<a style="color:#0a93a6; text-decoration:none;" href="#"></a>.</p>
- 	</footer>
+    
 </html>

@@ -19,49 +19,41 @@
 </head>
 
 <body>
+<div class = "jumbotron">
     <h1>pIcTuReMe</h1>
     <h3>Mes amis</h3>
+
+    </div>
 
     <div class="container">
         <div id="users">
 
             <h2 class="form-signin-heading">Qui voulez-vous retrouver ?</h2>
             <label for="inputAmis" class="sr-only">Nom/Prenom/Adresse mail</label>
-            <input type="text" id="inputAmis" class="search" placeholder=" Nom/Prenom/Adresse mail " required autofocus name="amis">
+            <input type="text" id="inputAmis" class="form-control" placeholder=" Nom/Prenom/Adresse mail " required autofocus name="amis">
 
-
-
-
-            <button class="sort" data-sort="name">
-    Filtrer par nom
-  </button>
-            <button class="sort" data-sort="pseudo">
-    Filtrer par pseudo
-  </button>
-
-            <ul class="list">
-                <li>
-                    <h5 class="name">Seycha Senth</h5>
-                    <p class="pseudo">sth.01 </p>
-                </li>
-                <li>
-                    <h5 class="name">Jeyam Celya</h5>
-                    <p class="pseudo">Celya13 </p>
-                </li>
-            </ul>
-
-
-
-        </div>
-        <div>
+   </div>
+    <div >
         
             <% for (var i=0 ; i < friends.length; i++){ %>
-                <p> <% typeof friends[i].id_user != 'undefined' ? friends[i].id_user : '' %> </p>
-                <p> <% typeof friends[i].name != 'undefined' ? friends[i].name : '' %>  </p>
+            <div class = "listeAmis" id = "mesAmis" >
+            <p> <a href="/accueil"> <%=  typeof friends[i].name != 'undefined' ? friends[i].name : '' %>  </a>
+                <%= typeof friends[i].mail != 'undefined' ? friends[i].mail : '' %> </p>
+                </div>
+                <br>   
+    <%}%>
 
-            <% } %>
-            <% JSON.stringify(friends) %>
-        </div>
+    <script>
+$(document).ready(function(){
+  $("#inputAmis").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#mesAmis p").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+     </div>
 
         <a href="/accueil">Retourner sur le tableau de bord</a>
 

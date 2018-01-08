@@ -19,7 +19,7 @@ var con = require('./db/bdd'); // Import du module de gestion de la connexion à
 
 // Initialisation
 app.use(expressValidator());
-app.use(session({secret:'XASDASDA'}));
+app.use(session({ secret: 'XASDASDA' }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(bodyParser.json());
@@ -58,26 +58,26 @@ app.get('/', function(req, res) {
 // Méthode POST de la page connexion
 app.post('/connexion', function(req, res) {
     passport.authenticate('local', { failWithError: true }),
-    User.getUserByEmail(req.body.email, function(err, user){
-        if(user!=null){
-            console.log("ENFIN!!!!!!!! "+req.body.email);
-            con.query("SELECT * FROM photos", function(err, result) { // Sélection de l'ensemble des photos de la bdd
-                if (err) throw err;
-                ssn=req.session;
-                ssn.user = user;
-                res.status(201);
-                res.render('accueil', { images: result, user: ssn.user }); // Renvoi vers la page d'accueil avec le tableau d'images retourné par la requête précédente
-        })
-        }else{
+        User.getUserByEmail(req.body.email, function(err, user) {
+            if (user != null) {
+                console.log("ENFIN!!!!!!!! " + req.body.email);
+                con.query("SELECT * FROM photos", function(err, result) { // Sélection de l'ensemble des photos de la bdd
+                    if (err) throw err;
+                    ssn = req.session;
+                    ssn.user = user;
+                    res.status(201);
+                    res.render('accueil', { images: result, user: ssn.user }); // Renvoi vers la page d'accueil avec le tableau d'images retourné par la requête précédente
+                })
+            } else {
+                res.status(401);
+                return res.render('inscription');
+            }
+
+        }),
+        function(err, req, res, next) {
             res.status(401);
             return res.render('inscription');
         }
-        
-    }),
-    function(err, req, res, next) {
-        res.status(401);
-        return res.render('inscription');
-    }
 });
 
 // app.post('/accueil',
@@ -99,32 +99,32 @@ app.post('/connexion', function(req, res) {
 app.get('/mesamis', (req, res) => {
     //---------------------------- A MODIFIER ----------------------------
     con.query("SELECT * FROM user", function(err, result) { // Sélection issue de la bdd de l'ensemble des amis du user connecté
-        if (err){ 
+        if (err) {
             res.status(404);
-            res.render("connexion", {msg: err});
-        }else{
+            res.render("connexion", { msg: err });
+        } else {
             app.use(express.static(__dirname + '/ressources'));
             console.log("MES AMIS part 1 ok ");
             res.status(200);
             res.render('mesamis', {
                 friends: result,
-                user: ssn.user 
+                user: ssn.user
             }); // Renvoi vers la page /mesamis avec le tableau d'amis retourné par la requête précédente
         }
     })
 });
 
 // Méthode GET de la page Mesinformations
-app.get('/mesinformations', function (req, res) {
-    app.use(express.static(__dirname+'/ressources'));
-    con.query("SELECT * FROM user where name='"+ssn.user.name+"'", function(err, result){
-    if(err){ 
-        res.status(404);
-        res.render("accueil", {msg: err, user: ssn.user});
-    }else{
-        res.render('mesinformations', {mesinfos: result, user: ssn.user});
-    }
-  })
+app.get('/mesinformations', function(req, res) {
+    app.use(express.static(__dirname + '/ressources'));
+    con.query("SELECT * FROM user where name='" + ssn.user.name + "'", function(err, result) {
+        if (err) {
+            res.status(404);
+            res.render("accueil", { msg: err, user: ssn.user });
+        } else {
+            res.render('mesinformations', { mesinfos: result, user: ssn.user });
+        }
+    })
 });
 
 // Méthode GET de la page d'inscription
@@ -172,7 +172,7 @@ app.post('/inscription', function(req, res) {
         User.createUser(newUser, function(err, user) {
             if (err) {
                 res.status(404);
-                res.render("inscription", {msg: err});
+                res.render("inscription", { msg: err });
             };
             console.log(user);
         });
@@ -202,7 +202,7 @@ passport.use(new LocalStrategy({
             console.log("OK");
             if (err) {
                 res.status(404);
-                res.render("inscription", {msg: err})
+                res.render("inscription", { msg: err })
             };
             console.log('user.AdresseMail =' + user.mail);
             console.log('user.MotDePasse =' + user.password);
@@ -214,7 +214,7 @@ passport.use(new LocalStrategy({
             User.comparePassword(password, user.password, function(err, isMatch) {
                 if (err) {
                     res.status(404);
-                    res.render("inscription", {msg: err})
+                    res.render("inscription", { msg: err })
                 };
                 // Comparaison : ok
                 if (isMatch) {
@@ -247,17 +247,15 @@ passport.deserializeUser(function(id, done) {
 // Méthode GET de la page connexion
 app.get('/connexion', function(req, res) {
     app.use(express.static(__dirname + '/ressources'));
-    ssn.destroy(function(err){
-		if(err){
+    ssn.destroy(function(err) {
+        if (err) {
             res.status(404);
-			res.render("connexion", {msg: err})
-		}
-		else
-		{
+            res.render("connexion", { msg: err })
+        } else {
             res.status(200);
-			res.redirect('/');
-		}
-	});
+            res.redirect('/');
+        }
+    });
     res.status(200);
     res.render('connexion');
 });
@@ -303,12 +301,12 @@ app.get('/accueil', (req, res) => {
     con.query("SELECT * FROM photos", function(err, result) { // Sélection issue de la bdd de l'ensemble des photos du user connecté + amis 
         if (err) {
             res.status(404);
-            res.render("connexion", {msg: err});
+            res.render("connexion", { msg: err });
         };
         res.status(200);
         res.render('accueil', {
             images: result,
-            user: ssn.user 
+            user: ssn.user
         }); // Renvoi vers la page /accueil avec le tableau d'images retournés par la requête précédente
     })
 });
@@ -317,7 +315,7 @@ app.get('/accueil', (req, res) => {
 app.get('/upload', function(req, res) {
     app.use(express.static(__dirname + '/ressources'));
     res.status(200);
-    res.render('upload', {user: ssn.user });
+    res.render('upload', { user: ssn.user });
 });
 
 // Méthode POST de la page upload
@@ -348,7 +346,7 @@ app.post('/upload', (req, res) => {
                 Photo.createPhoto(newPhoto, function(err, result) {
                     if (err) {
                         res.status(404);
-                        res.render("upload",{
+                        res.render("upload", {
                             msg: err,
                             user: ssn.user
                         });
@@ -367,7 +365,7 @@ app.post('/upload', (req, res) => {
                     res.render('accueil', {
                         msg: 'Image publié!',
                         images: result,
-                        user: ssn.user 
+                        user: ssn.user
                     }); // Renvoi vers la page /accueil avec le tableau d'images retournés par la requête précédente
                 })
             }

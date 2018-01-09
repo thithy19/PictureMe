@@ -44,3 +44,31 @@ h1,h3{
 .photos{
 	align-items: center;
 }
+
+#chat{
+  margin-top: 200px;
+}
+
+#envoi_message{
+  margin-top: 10px;
+  margin-left: 200px;
+  color: white;
+  background: black;
+  border-radius: 8px; 
+}
+
+#supprimer{
+  background-color:red;
+  border-radius: 8px;
+  color: white;
+}
+
+#modifier{
+  background-color: #008CBA;
+  border-radius: 8px;
+  color: white;
+}
+
+.containermesamis{
+  margin-left: 500px;
+}

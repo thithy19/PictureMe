@@ -6,8 +6,8 @@ var con = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    port: 3306,
-    database: 'pictureme'
+    port: 8889,
+    database: 'test'
 });
 
 module.exports = con;

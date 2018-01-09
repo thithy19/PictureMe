@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="../../../css/bigtwit.css">
+<link rel="stylesheet" href="../../../bootstrap-3.3.7-dist/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="../../../bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body>
+    <br/>
+    <br/>
+    
+    <div>
+    <form method="post" action="/photos/edit/<%=data[0].id_photo%>">
+        <tr>
+        <div class="pull-left" style="font-size: 20px;">
+       <span class="label label-info">Modification de la description</span>
+       </div><br><br>
+
+           <textarea maxlength="1000" rows="10" cols="65" type="text" name="Message" required onkeyup="reste(this.value);"><%=data[0].Message%> </textarea><br />
+           <div id="caracteresRestants"><span id="caracteres">1000</span> caractères restants </div>
+           <script type="text/javascript">
+               function reste(texte)
+               {
+               var restants=1000-texte.length;
+               document.getElementById('caracteres').innerHTML=restants;
+               }
+           </script>
+                                           
+       </tr>
+
+
+        <tr>
+           <td class="label"></td>
+           <td>
+               <input type="submit" name="submit" value="Enregistrer">
+           </td>
+        </tr>
+        </form>
+        </div>
+
+
+</body>
+</html>

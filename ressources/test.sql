@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost:8889
--- Généré le :  Jeu 04 Janvier 2018 à 21:07
+-- Généré le :  Mar 09 Janvier 2018 à 16:15
 -- Version du serveur :  5.5.42
 -- Version de PHP :  7.0.8
 
@@ -31,6 +31,15 @@ CREATE TABLE `friends` (
   `id_friend` int(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Contenu de la table `friends`
+--
+
+INSERT INTO `friends` (`id_user`, `id_friend`) VALUES
+(2, 1),
+(2, 3),
+(2, 4);
+
 -- --------------------------------------------------------
 
 --
@@ -38,23 +47,30 @@ CREATE TABLE `friends` (
 --
 
 CREATE TABLE `photos` (
-  `id_photo` int(11) NOT NULL,
+  `id_photo` varchar(50) NOT NULL,
   `description` varchar(250) NOT NULL,
   `id_user` text NOT NULL,
   `photo_url` varchar(250) NOT NULL,
   `dateHeure` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `photos`
 --
 
 INSERT INTO `photos` (`id_photo`, `description`, `id_user`, `photo_url`, `dateHeure`) VALUES
-(1, 'Voici la photo N°1', 'test', 'uploads/myImage-1515096337743.jpg', '2018-01-04 20:05:37'),
-(2, 'Voici la photo N°2', 'test', 'uploads/myImage-1515096346906.jpg', '2018-01-04 20:05:46'),
-(3, 'Voici la photo N°3', 'test', 'uploads/myImage-1515096381245.jpg', '2018-01-04 20:06:21'),
-(4, 'Voici la photo N°4', 'test', 'uploads/myImage-1515096391693.jpg', '2018-01-04 20:06:31'),
-(5, '', 'test', 'uploads/myImage-1515096397262.jpg', '2018-01-04 20:06:37');
+('76i7q1', 'wahooooo', '3', 'uploads/myImage-1515494271126.jpeg', '2018-01-09 10:37:51'),
+('80aso3', 'Mickey il est beau', '3', 'uploads/myImage-1515494290325.png', '2018-01-09 10:38:10'),
+('fxehep', 'Photo prise en 2017', '2', 'uploads/myImage-1515493912268.jpg', '2018-01-09 10:31:52'),
+('gbsch8', 'Game of Throne 1', '1', 'uploads/myImage-1515494144873.jpeg', '2018-01-09 10:35:44'),
+('ilt57k', 'il a froid', '1', 'uploads/myImage-1515494178139.jpeg', '2018-01-09 10:36:18'),
+('jyhjfr', 'Durant mes vacances de 2015', '2', 'uploads/myImage-1515509268709.jpg', '2018-01-09 14:47:48'),
+('o4m6ki', 'Je l''ai prise de notre rosier', '2', 'uploads/myImage-1515493885756.jpg', '2018-01-09 10:31:25'),
+('qsa8n6', 'J''ai peur', '1', 'uploads/myImage-1515494168979.jpeg', '2018-01-09 10:36:08'),
+('ri0gg7', 'Les oiseaux chez moi !', '2', 'uploads/myImage-1515507488979.jpg', '2018-01-09 14:18:08'),
+('sa761z', 'Elle est trop belle', '1', 'uploads/myImage-1515494157274.jpeg', '2018-01-09 10:35:57'),
+('teddbk', 'hihihihihi', '3', 'uploads/myImage-1515494248101.jpeg', '2018-01-09 10:37:28'),
+('vq5cdw', 'je les adoressss', '3', 'uploads/myImage-1515494262054.jpeg', '2018-01-09 10:37:42');
 
 -- --------------------------------------------------------
 
@@ -75,8 +91,10 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `mail`, `password`, `name`, `pseudo`) VALUES
-(3, 'kt@gmail.com', '$2a$10$0DMCnwUbqFGwlLJyFlaYnOTOXBslSadnbhXjNdyE4X47sgL1mN2w6', 'Thiepthy', 'thithy'),
-(4, 'kt@gmail.com', '$2a$10$yhaGNvLcWiNhDQzDofWTPuXf2K4.o.aH0RUCp4D3yaxH/HFfm2Plu', 'thiepthy', 'titi');
+(1, 'wassim-ajili@hotmail.fr', '$2a$10$W1mvsulsbMXkY3yith5ZyOQd9WHYKwcvAmANjlc3Wexn5SLn9.htS', 'Wassim Ajili', 'wass'),
+(2, 'kt@gmail.com', '$2a$10$Olr6FtjXtSgmi4r8v8p5LOEc8df/6G2g2Tix21YuG61yNUdJ0L75m', 'Thiepthy KANAGASABAI', 'thithy91'),
+(3, 'jena@gmail.com', '$2a$10$6mqaxL0MaaJ.741ZhZzZm.F5rN3XFV1xPZYo4oYg24qVKEsasyQom', 'Jenourthika JEYAKUMAR', 'jena'),
+(4, 'ami@hotmail.fr', '$2a$10$SsvmEAFXZxvkmuInbIf5auqTD8bossuKBXHDOZYSvZrW8OaA5qLce', 'Aminata CISSE', 'amidado');
 
 --
 -- Index pour les tables exportées
@@ -104,11 +122,6 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour les tables exportées
 --
 
---
--- AUTO_INCREMENT pour la table `photos`
---
-ALTER TABLE `photos`
-  MODIFY `id_photo` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT pour la table `user`
 --

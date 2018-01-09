@@ -2,7 +2,11 @@ var http = require('http');
 var url = require('url');
 var ejs = require('ejs'); // Import du module d'incorporation du modèle JavaScript
 var express = require('express'); // Import du framework express
-var app = express(); // Appelle de la fonction de création d'application Express
+var app = express(); // Appel de la fonction de création d'application Express
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+var ent = require('ent');
+var fs = require('fs');
 var bodyParser = require('body-parser'); // Import du module d'analyse du corps de requête (retourné par req.body)
 var util = require('util');
 var passport = require('passport'); // Import du module d'authentification compatible avec Express
@@ -12,6 +16,7 @@ var expressValidator = require('express-validator'); // Import du module express
 var session = require('express-session'); // Import du module de gestion des sessions et cookies 
 var multer = require('multer'); // Import du module de gestion d'upload de fichier
 var path = require("path");
+var methodOverride = require("method-override");
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var User = require('./models/user'); // Import du modèle user
 var Photo = require('./models/photo'); // Import du modèle photo
@@ -36,12 +41,38 @@ app.use(function(req, res, next) {
 // Initialisation du port
 app.set('port', (process.env.PORT || 8080));
 
+// Mise en place du port
+/* app.listen(app.get('port'), function() {
+    console.log('listening on port ' + app.get('port') + '!');
+}) */
+
+server.listen(8080);
 
 app.set('view engine', 'ejs'); // Moteur de modèle utilisé
 
 // Page de connexion 
 app.get('/', function(req, res) {
     app.use(express.static(__dirname + '/ressources')); // Utilisation de l'ensemble des ressources nécessaires (css, js, etc.)
+    res.status(200);
+    res.render('connexion');
+});
+
+app.get('/photo/delete/:id',Photo.delete_photo);
+
+// Méthode GET de la page connexion
+app.get('/connexion', function(req, res) {
+    app.use(express.static(__dirname + '/ressources'));
+    ssn.destroy(function(err){
+		if(err){
+            res.status(404);
+			res.render("connexion", {msg: err})
+		}
+		else
+		{
+            res.status(200);
+			res.redirect('/');
+		}
+	});
     res.status(200);
     res.render('connexion');
 });
@@ -78,53 +109,22 @@ app.post('/connexion', function(req, res) {
     }
 });
 
-// // Méthode POST de la page connexion
-// app.post('/connexion', function(req, res) {
-//     passport.authenticate('local', { failWithError: true }),
-//     User.getUserByEmail(req.body.email, function(err, user){
-//         if(user!=null){
-//             console.log("ENFIN!!!!!!!! "+req.body.email);
-//             con.query("SELECT * FROM photos", function(err, result) { // Sélection de l'ensemble des photos de la bdd
-//                 if (err) throw err;
-//                 ssn=req.session;
-//                 ssn.user = user;
-                
-//                 Friends.getFriendsById(user.id_user, function(err, friends) {
-//                     if (err) {
-//                         res.status(404);
-//                         res.render("connexion", {msg: err});
-//                     };
-//                 });  
-//                 console.log(ssn.nbfriends);
-//                 res.status(201);
-//                 res.render('accueil', { images: result, user: ssn.user}); // Renvoi vers la page d'accueil avec le tableau d'images retourné par la requête précédente
-//         })
-//         }else{
-//             res.status(401);
-//             return res.render('inscription');
-//         }
-        
-//     }),
-//     function(err, req, res, next) {
-//         res.status(401);
-//         return res.render('inscription');
-//     }
-// });
+// Méthode GET de la page accueil
+app.get('/accueil', (req, res) => {
+    //---------------------------- A MODIFIER ----------------------------
+    con.query("SELECT * FROM photos, user WHERE user.id_user = photos.id_user", function(err, result) { // Sélection issue de la bdd de l'ensemble des photos du user connecté + amis 
+        if (err) {
+            res.status(404);
+            res.render("connexion", {msg: err});
+        };
+        res.status(200);
+        res.render('accueil', {
+            images: result,
+            user: ssn.user 
+        }); // Renvoi vers la page /accueil avec le tableau d'images retournés par la requête précédente
+    })
+});
 
-// app.post('/accueil',
-//     passport.authenticate('local', { failWithError: true }),
-//     function(req, res, next) {
-//         // handle success
-//         User.getUserByEmail(req.body.email, function(err, user){
-//             console.log("ENFIN!!!!!!!! "+req.body.email);
-//             res.render('accueil', {user: user});
-//         });
-//     },
-//     function(err, req, res, next) {
-//         // handle error
-//         return res.render('inscription');
-//     }
-// );
 
 // Méthode GET de la page MesAmis
 app.get('/mesamis', (req, res) => {
@@ -141,11 +141,12 @@ app.get('/mesamis', (req, res) => {
 // Méthode GET de la page Mesinformations
 app.get('/mesinformations', function (req, res) {
     app.use(express.static(__dirname+'/ressources'));
-    con.query("SELECT * FROM user WHERE name='"+ssn.user.name+"'", function(err, result){
+    con.query("SELECT * FROM user where name='"+ssn.user.name+"'", function(err, result){
     if(err){ 
         res.status(404);
         res.render("accueil", {msg: err, user: ssn.user});
     }else{
+        res.status(200);        
         res.render('mesinformations', {mesinfos: result, user: ssn.user});
     }
   })
@@ -192,7 +193,7 @@ app.post('/inscription', function(req, res) {
             password: password
         };
 
-        // Appelle de la méthode createUser issu du modèle user
+        // Appel de la méthode createUser issu du modèle user
         User.createUser(newUser, function(err, user) {
             if (err) {
                 res.status(404);
@@ -207,18 +208,13 @@ app.post('/inscription', function(req, res) {
     }
 });
 
-// Mis en place du port
-app.listen(app.get('port'), function() {
-    console.log('listening on port ' + app.get('port') + '!');
-})
-
 // Configuration et gestion de l'authentification
 passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',
     passReqToCallBack: true
 }, function(email, password, done) {
-    // Appelle de la méthode getUserByEmail issu du modèle user
+    // Appel de la méthode getUserByEmail issu du modèle user
     User.getUserByEmail(email, function(err, user) {
         console.log("je passe ici");
         // Si user existe dans la bdd
@@ -268,28 +264,7 @@ passport.deserializeUser(function(id, done) {
     });
 });
 
-// Méthode GET de la page connexion
-app.get('/connexion', function(req, res) {
-    app.use(express.static(__dirname + '/ressources'));
-    ssn.destroy(function(err){
-		if(err){
-            res.status(404);
-			res.render("connexion", {msg: err})
-		}
-		else
-		{
-            res.status(200);
-			res.redirect('/');
-		}
-	});
-    res.status(200);
-    res.render('connexion');
-});
-
-
 app.use(express.static('./'));
-
-//---------------------------- MODIFICATION DES CONST EN VAR ----------------------------
 
 // Configuration des informations concernant l'upload
 var storage = multer.diskStorage({
@@ -298,7 +273,6 @@ var storage = multer.diskStorage({
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
 });
-
 
 // Initialisation de l'upload
 var upload = multer({
@@ -320,22 +294,6 @@ function checkFileType(file, cb) {
         cb('Error: Seules les images sont autorisées!');
     }
 }
-
-// Méthode GET de la page accueil
-app.get('/accueil', (req, res) => {
-    //---------------------------- A MODIFIER ----------------------------
-    con.query("SELECT * FROM photos WHERE id_user = " + ssn.user.id_user, function(err, result) { // Sélection issue de la bdd de l'ensemble des photos du user connecté + amis 
-        if (err) {
-            res.status(404);
-            res.render("connexion", {msg: err});
-        };
-        res.status(200);
-        res.render('accueil', {
-            images: result,
-            user: ssn.user 
-        }); // Renvoi vers la page /accueil avec le tableau d'images retournés par la requête précédente
-    })
-});
 
 // Méthode GET de la page Upload
 app.get('/upload', function(req, res) {
@@ -380,7 +338,7 @@ app.post('/upload', (req, res) => {
                     };
                 });
 
-                con.query("SELECT * FROM photos WHERE id_user = " + ssn.user.id_user, function(err, result) {
+                con.query("SELECT * FROM photos", function(err, result) {
                     if (err) {
                         res.status(404);
                         res.render("upload", {
@@ -389,9 +347,72 @@ app.post('/upload', (req, res) => {
                         });
                     };
                     res.status(200);
-                    res.redirect("/accueil"); // Renvoi vers la page /accueil avec le tableau d'images retournés par la requête précédente
-                })
+                    res.render('accueil', {
+                        msg: 'Image publié!',
+                        images: result,
+                        user: ssn.user 
+                    }); // Renvoi vers la page /accueil avec le tableau d'images retournés par la requête précédente
+                });
+                res.redirect("/accueil");
             }
         }
     });
 });
+
+// Méthode HTTP Delete
+app.delete('/photo/delete/:id', function (req, res) {
+    let id = req.params.id;
+    try {
+        Photo.delete_photo(id);
+        ssn.data = result;
+        res.status(200);
+    } 
+    catch (exeception) {
+        res.send(404);
+    }
+});
+
+// Méthode pour le chat
+io.sockets.on('connection', function (socket, pseudo) {
+    // Dès qu'on nous donne un pseudo, on le stocke en variable de session et on informe les autres personnes
+    socket.on('nouveau_client', function(pseudo) {
+        pseudo = ent.encode(pseudo);
+        socket.pseudo = pseudo;
+        socket.broadcast.emit('nouveau_client', pseudo);
+    });
+
+    // Dès qu'on reçoit un message, on récupère le pseudo de son auteur et on le transmet aux autres personnes
+    socket.on('message', function (message) {
+        message = ent.encode(message);
+        socket.broadcast.emit('message', {pseudo: socket.pseudo, message: message});
+    }); 
+});
+
+/* app.put('/photo/edit/:id', function (req, res){
+let id = req.params.id;    
+console.log(id);
+    try {
+        console.log("bjr");
+        Photo.edit(id, function(err, result){
+            console.log(result[0].id_photo);
+            ssn.data = result;
+            console.log("testtttttt");
+            res.status(200);
+        });
+    } 
+    catch (exeception) {
+        res.send(404);
+    }
+}); */
+
+//app.get('/edit/:id', Photo.edit);
+//app.post('/edit/:id',Photo.save_edit);
+
+
+
+
+
+
+
+
+

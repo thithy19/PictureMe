@@ -45,7 +45,7 @@
 						<ul class="nav navbar-nav navbar-right">
 						    <li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							    <span class="glyphicon glyphicon-user"></span> 
+							    <span class="glyphicon glyphicon-user"></span> 
 							    <strong> <%= user.name %> </strong>
 							    <span class="glyphicon glyphicon-chevron-down"></span>
 							</a>
@@ -103,19 +103,6 @@
     </body>
     <footer>
 	<p>© 2017<a style="color:#0a93a6; text-decoration:none;" href="#"></a>.</p>
- 	</footer>
+	 </footer>
 
-		<script>
-					function delete()
-					{
-						// Delete a user
-						var url = "/photo/delete";
-						var xhr = new XMLHttpRequest();
-						xhr.open("DELETE", url+'/63', true);
-						xhr.send();
-						console.log("delete");
-					}
-			
-					</script>
-		<button onclick="delete">Supprimer</button>
 </html>

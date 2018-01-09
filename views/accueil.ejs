@@ -1,97 +1,196 @@
 <html>
-    <head>
-        <title>Mon profil</title>
-        <meta charset='UTF-8'>
-        <script src='http://code.jquery.com/jquery-1.12.4.min.js'></script>
-        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
-        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css'>
-        <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
-		<script src='style.js'></script>
-		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="/script/styleconnexion.css">
-		<link rel="stylesheet" href="/script/style.css" />
-		<link rel="stylesheet" href="/script/dashboard.css" />
+		<head>
+			<title>Mon profil</title>
+			<meta charset='UTF-8'>
+			<script src='http://code.jquery.com/jquery-1.12.4.min.js'></script>
+			<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+			<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css'>
+			<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+			<script src='style.js'></script>
+			<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+			<link rel="stylesheet" href="/script/styleconnexion.css">
+			<link rel="stylesheet" href="/script/style.css" />
+			<link rel="stylesheet" href="/script/dashboard.css" />
+			<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+			<script src="/socket.io/socket.io.js"></script>
+		</head>
+		<body>
+		<script>
+						function Supprimer() 
+						{
+							var url = "/photo/delete";
+							var id= event.target.value;
+							var xhr = new XMLHttpRequest();
+							xhr.open("DELETE", url+'/' + id, true);
+							xhr.onload = function () {
+								console.log("onload");
+								if (xhr.status == "200") {
+									window.location = "http://localhost:8080/upload";
+								} else {
+									console.log("merde");
+								}
+							}
+							xhr.send(null);
+							
+						}
 
-    </head>
-    <body>
-		<nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
-          <ul class="nav nav-pills flex-column">
-            <li class="nav-item">
-              <a class="nav-link active" href="/accueil">Mon profil <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/mesamis">Mes amis <b><%= friends.length %></b></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="/upload">Ajouter une photo</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/mesinformations">Mes informations</a>
-            </li>
-          </ul>
-        </nav>
+						// function Modifier()
+						// {
+						// alert("rentree dans modifier");
+						// var url = "/photo/edit";
+						// var id= event.target.value;
+						// var xhr = new XMLHttpRequest();
+						// xhr.open("PUT", url+'/' + id, true);
+						// xhr.open("GET", "http://localhost:8080/upload", true);
+						// xhr.onreadystatechange = function() {
+						// 	console.log('fonction ok');
+						// if (xhr.status == 200) 
+						// {
+						// 	console.log("j'arrive");
+						// 	var resp = eval( "(" +  xhr.responseText + ")"); 
+						// 	if(resp.resultat == 'Succès')
+						// 	{
+						// 		console.log("enfin");
+						// 		window.location = "http://localhost:8080/upload";
+						// 	}	
+						// }
+						// xhr.send();				
+						// };
+						</script>
+	
+			<nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+			  <ul class="nav nav-pills flex-column">
+				<li class="nav-item">
+				  <a class="nav-link active" href="/accueil">Mon profil <span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item">
+				 <a class="nav-link" href="/mesamis">Mes amis <b><%= friends.length %></b></a>				</li>
+				<li class="nav-item">
+				  <a class="nav-link active" href="/upload">Ajouter une photo</a>
+				</li>
+				<li class="nav-item">
+				  <a class="nav-link" href="/mesinformations">Mes informations</a>
+				</li>
+			  </ul>
+			  <div id="chat">
+				<h3> Discussions </h3> 
+				<p> Parlez avec vos amis </p> 
+				<section id="zone_chat">
+							
+				</section>  
+				<form action="/" method="post" id="formulaire_chat">
+					<input type="text" name="message" id="message" placeholder="Votre message..." size="38" autofocus />
+					<input type="hidden" name="pseudo" id="pseudo" value="<%= user.pseudo %>"/>
+					<input type="submit" id="envoi_message" value="Envoyer" />
+				</form>
+		
 
-
-	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-					<div class="container"> 
-					    <div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-						    <span class="icon-bar"></span>
-						    <span class="icon-bar"></span>
-						    <span class="icon-bar"></span> 
-						</button>
-						<a target="_blank" href="#" class="navbar-brand"></a>
-					    </div>
-						<ul class="nav navbar-nav navbar-right">
-						    <li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							    <span class="glyphicon glyphicon-user"></span> 
-							    <strong> <%= user.name %> </strong>
-							    <span class="glyphicon glyphicon-chevron-down"></span>
-							</a>
-							<ul class="dropdown-menu">
-							    <li>
-								<div class="navbar-login">
-								    <div class="row">
-									<div class="col-lg-8">
-										<p class="text-left small"><%= user.pseudo %></p>
+			</div>
+			</nav>
+	
+	
+		<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+						<div class="container"> 
+							<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span> 
+							</button>
+							<a target="_blank" href="#" class="navbar-brand"></a>
+							</div>
+							<ul class="nav navbar-nav navbar-right">
+								<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									<span class="glyphicon glyphicon-user"></span> 
+									<strong> <%= user.name %> </strong>
+									<span class="glyphicon glyphicon-chevron-down"></span>
+								</a>
+								<ul class="dropdown-menu">
+									<li>
+									<div class="navbar-login">
+										<div class="row">
+										<div class="col-lg-8">
+											<p class="text-left small"><%= user.pseudo %></p>
+										</div>
+										</div>
 									</div>
-								    </div>
-								</div>
-							    </li>
-							    <li class="divider"></li>
-							    <li>
-								<div class="navbar-login navbar-login-session">
-								    <div class="row">
-									<div class="col-lg-12">
-									    <p>
-										<a href="/" class="btn btn-danger btn-block">Se deconnecter</a>
-									    </p>
+									</li>
+									<li class="divider"></li>
+									<li>
+									<div class="navbar-login navbar-login-session">
+										<div class="row">
+										<div class="col-lg-12">
+											<p>
+											<a href="/" class="btn btn-danger btn-block">Se deconnecter</a>
+											</p>
+										</div>
+										</div>
 									</div>
-								    </div>
-								</div>
-							    </li>
+									</li>
+								</ul>
+								</li>
 							</ul>
-						    </li>
-						</ul>
-					    </div>
-					</div>
-				    </div>
-<div class = "container">
-<div class="row">    
-    <div class="col-xs-12 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">  
-	<div class="wrapper">
-	<br>
-	<div class="photos">
-		<% for(var i=0; i<images.length; i++) { %> 
-		<b> Description: <%= typeof images[i].description != 'undefined' ? images[i].description : '' %> </b><br>
-		<img src="<%= typeof images[i].photo_url != 'undefined' ? images[i].photo_url : '' %>" class="responsive-img"><br>
-		<i> <%= typeof images[i].dateHeure != 'undefined' ? images[i].dateHeure : '' %> </i><br><br>
-		<% } %>
+							</div>
+						</div>
+						</div>
+	<div class = "container">
+	<div class="row">    
+		<div class="col-xs-12 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">  
+		<div class="wrapper">
+		<br>
+		<div class="photos">
+			<% for(var i=0; i<images.length; i++) { %> 
+			<b> Description: <%= typeof images[i].description != 'undefined' ? images[i].description : '' %> </b><br>
+			<img src="<%= typeof images[i].photo_url != 'undefined' ? images[i].photo_url : '' %>" class="responsive-img"><br>
+			<i> Publiée par <%= typeof images[i].name != 'undefined' ? images[i].name : '' %> </i>
+			<i> , <%= typeof images[i].dateHeure != 'undefined' ? images[i].dateHeure : '' %> </i><br>
+			<% if(images[i].id_user== user.id_user) { %>
+				<button id="supprimer" value="<%= images[i].id_photo %>" onclick="window.location.href='../photo/delete/<%=images[i].id_photo%>';">Supprimer</button>
+				<button id="modifier" value="<%= images[i].id_photo %>" onclick="Modifier()">Modifier</button><br><br>
+			<% } %>
+			<% } %>
+		</div>
 	</div>
-</div>
-</div>
+	</div>  
 
-    </body>
-   
-</html>
+	<script>
+		 // Connexion à socket.io
+		 var socket = io.connect('http://localhost:8080');
+
+            // On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
+            var pseudo = document.getElementById("pseudo").value;
+            socket.emit('nouveau_client', pseudo);
+            document.title = pseudo + ' - ' + document.title;
+
+            // Quand on reçoit un message, on l'insère dans la page
+            socket.on('message', function(data) {
+                insereMessage(data.pseudo, data.message)
+            })
+
+            // Quand un nouveau client se connecte, on affiche l'information
+            socket.on('nouveau_client', function(pseudo) {
+                $('#zone_chat').prepend('<p><em>' + pseudo + ' a rejoint le Chat !</em></p>');
+            })
+
+            // Lorsqu'on envoie le formulaire, on transmet le message et on l'affiche sur la page
+            $('#formulaire_chat').submit(function () {
+                var message = $('#message').val();
+                socket.emit('message', message); // Transmet le message aux autres
+                insereMessage(pseudo, message); // Affiche le message aussi sur notre page
+                $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
+                return false; // Permet de bloquer l'envoi "classique" du formulaire
+            });
+            
+            // Ajoute un message dans la page
+            function insereMessage(pseudo, message) {
+                $('#zone_chat').prepend('<p><strong>' + pseudo + '</strong> ' + message + '</p>');
+            }
+
+	</script>
+	
+		</body>
+		<footer>
+		<p>© 2017<a style="color:#0a93a6; text-decoration:none;" href="#"></a>.</p>
+		 </footer>
+	</html>

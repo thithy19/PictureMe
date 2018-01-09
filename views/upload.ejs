@@ -20,13 +20,13 @@
               <a class="nav-link active" href="/accueil">Mon profil</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="/mesamis">Mes amis <b> <%= friends.length %> </b></a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link active" href="/upload">Ajouter une photo <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/mesamis">Mes amis</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Mes informations</a>
+              <a class="nav-link" href="/mesinformations">Mes informations</a>
             </li>
           </ul>
         </nav>
@@ -104,4 +104,18 @@
     <footer>
 	<p>© 2017<a style="color:#0a93a6; text-decoration:none;" href="#"></a>.</p>
  	</footer>
+
+		<script>
+					function delete()
+					{
+						// Delete a user
+						var url = "/photo/delete";
+						var xhr = new XMLHttpRequest();
+						xhr.open("DELETE", url+'/63', true);
+						xhr.send();
+						console.log("delete");
+					}
+			
+					</script>
+		<button onclick="delete">Supprimer</button>
 </html>

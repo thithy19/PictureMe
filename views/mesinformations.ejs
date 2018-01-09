@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Mon profil</title>
+        <title>Mes informations</title>
         <meta charset='UTF-8'>
         <script src='http://code.jquery.com/jquery-1.12.4.min.js'></script>
         <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
@@ -17,13 +17,16 @@
 		<nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
           <ul class="nav nav-pills flex-column">
             <li class="nav-item">
-              <a class="nav-link active" href="/accueil">Mon profil <span class="sr-only">(current)</span></a>
+              <a class="nav-link active" href="/accueil">Mon profil</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/mesamis">Mes amis</a>
+              <a class="nav-link" href="/mesamis">Mes amis <b> <%= friends.length %> </b></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Mes informations</a>
+              <a class="nav-link active" href="/upload">Ajouter une photo</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/mesinformations">Mes informations</a>
             </li>
           </ul>
         </nav>
@@ -43,7 +46,7 @@
 						    <li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							    <span class="glyphicon glyphicon-user"></span> 
-							    <strong> user.name  </strong>
+							    <strong> <%= user.name %> </strong>
 							    <span class="glyphicon glyphicon-chevron-down"></span>
 							</a>
 							<ul class="dropdown-menu">
@@ -51,7 +54,7 @@
 								<div class="navbar-login">
 								    <div class="row">
 									<div class="col-lg-8">
-										<p class="text-left small">user.pseudo</p>
+										<p class="text-left small"><%= user.pseudo %></p>
 									</div>
 								    </div>
 								</div>
@@ -74,22 +77,25 @@
 					    </div>
 					</div>
 				    </div>
-
-<div class="mesinfos">
-    <h2>Mes informations</h2>
-    <p> 
-        <% for(var i=0; i<mesinfos.length; i++) { %>  
-		<b> Nom: <%= typeof mesinfos[i].name != 'undefined' ? mesinfos[i].name : '' %> </b><br>
-		<b> pseudo: <%= typeof mesinfos[i].pseudo != 'undefined' ? mesinfos[i].pseudo : '' %> </b><br>
-		<b> Mail: <%= typeof mesinfos[i].Mail != 'undefined' ? mesinfos[i].Mail : '' %> </b><br>
-		<b> Mesamis: </b><br>
-		<% } %>
-    </p>
+<div class = "container">
+<div class="row">    
+    <div class="col-xs-12 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">  
+	<div class="wrapper">
+	<br>
+	<div class="mesinfos">
+		<h2>Mes informations</h2>
+		<p> 
+			<% for(var i=0; i<mesinfos.length; i++) { %>  
+			<b> Nom: <%= typeof mesinfos[i].name != 'undefined' ? mesinfos[i].name : '' %> </b><br>
+			<b> pseudo: <%= typeof mesinfos[i].pseudo != 'undefined' ? mesinfos[i].pseudo : '' %> </b><br>
+			<b> Mail: <%= typeof mesinfos[i].mail != 'undefined' ? mesinfos[i].mail : '' %> </b><br>
+			<b> Mesamis: </b><br>
+			<% } %>
+		</p>
+	</div>
 </div>
-            
+</div>
 
-  
- 
     </body>
     <footer>
 	<p>© 2017<a style="color:#0a93a6; text-decoration:none;" href="#"></a>.</p>

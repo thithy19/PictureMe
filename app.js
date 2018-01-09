@@ -15,6 +15,7 @@ var path = require("path");
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var User = require('./models/user'); // Import du modèle user
 var Photo = require('./models/photo'); // Import du modèle photo
+var Friends = require('./models/friends'); // Import du modèle friends
 var con = require('./db/bdd'); // Import du module de gestion de la connexion à la bdd
 
 // Initialisation
@@ -26,6 +27,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 var ssn;
+app.use(function(req, res, next) {
+  res.locals = req.session;
+  ssn = res.locals;
+  next();
+});
 
 // Initialisation du port
 app.set('port', (process.env.PORT || 8080));
@@ -40,21 +46,6 @@ app.get('/', function(req, res) {
     res.render('connexion');
 });
 
-// // Méthode POST de la page Accueil
-// app.post('/accueil', function(req, res) {
-//     // User.getUserByEmail(req.body.email, function(err, user){
-//     //         console.log("ENFIN!!!!!!!! "+req.body.email);
-//     //         res.render('accueil', {user: user});
-//     // }),
-//     // function(err, req, res, next) {
-//     //     return res.render('inscription');
-//     // },
-//     con.query("SELECT * FROM photos", function(err, result) { // Sélection de l'ensemble des photos de la bdd
-//         if (err) throw err;
-//         res.render('accueil', { images: result }); // Renvoi vers la page d'accueil avec le tableau d'images retourné par la requête précédente
-//     })
-// });
-
 // Méthode POST de la page connexion
 app.post('/connexion', function(req, res) {
     passport.authenticate('local', { failWithError: true }),
@@ -63,14 +54,21 @@ app.post('/connexion', function(req, res) {
             console.log("ENFIN!!!!!!!! "+req.body.email);
             con.query("SELECT * FROM photos", function(err, result) { // Sélection de l'ensemble des photos de la bdd
                 if (err) throw err;
-                ssn=req.session;
                 ssn.user = user;
-                res.status(201);
-                res.render('accueil', { images: result, user: ssn.user }); // Renvoi vers la page d'accueil avec le tableau d'images retourné par la requête précédente
-        })
+                Friends.getFriendsById(user.id_user, function(err, friends) {
+                    if (err) {
+                        res.status(404);
+                        res.redirect("connexion");
+                    };
+                    ssn.friends = friends;
+                    ssn.images = result;
+                    console.log(friends.length);
+                    res.status(201);
+                    res.redirect('/accueil'); // Renvoi vers la page d'accueil avec le tableau d'images retourné par la requête précédente
+                });})
         }else{
             res.status(401);
-            return res.render('inscription');
+            return res.redirect('/inscription');
         }
         
     }),
@@ -79,6 +77,39 @@ app.post('/connexion', function(req, res) {
         return res.render('inscription');
     }
 });
+
+// // Méthode POST de la page connexion
+// app.post('/connexion', function(req, res) {
+//     passport.authenticate('local', { failWithError: true }),
+//     User.getUserByEmail(req.body.email, function(err, user){
+//         if(user!=null){
+//             console.log("ENFIN!!!!!!!! "+req.body.email);
+//             con.query("SELECT * FROM photos", function(err, result) { // Sélection de l'ensemble des photos de la bdd
+//                 if (err) throw err;
+//                 ssn=req.session;
+//                 ssn.user = user;
+                
+//                 Friends.getFriendsById(user.id_user, function(err, friends) {
+//                     if (err) {
+//                         res.status(404);
+//                         res.render("connexion", {msg: err});
+//                     };
+//                 });  
+//                 console.log(ssn.nbfriends);
+//                 res.status(201);
+//                 res.render('accueil', { images: result, user: ssn.user}); // Renvoi vers la page d'accueil avec le tableau d'images retourné par la requête précédente
+//         })
+//         }else{
+//             res.status(401);
+//             return res.render('inscription');
+//         }
+        
+//     }),
+//     function(err, req, res, next) {
+//         res.status(401);
+//         return res.render('inscription');
+//     }
+// });
 
 // app.post('/accueil',
 //     passport.authenticate('local', { failWithError: true }),
@@ -97,27 +128,20 @@ app.post('/connexion', function(req, res) {
 
 // Méthode GET de la page MesAmis
 app.get('/mesamis', (req, res) => {
-    //---------------------------- A MODIFIER ----------------------------
-    con.query("SELECT * FROM user", function(err, result) { // Sélection issue de la bdd de l'ensemble des amis du user connecté
-        if (err){ 
+    Friends.getPhotosFriends(ssn.user.id_user, function(err, result){
+        if(err) {
             res.status(404);
-            res.render("connexion", {msg: err});
-        }else{
-            app.use(express.static(__dirname + '/ressources'));
-            console.log("MES AMIS part 1 ok ");
-            res.status(200);
-            res.render('mesamis', {
-                friends: result,
-                user: ssn.user 
-            }); // Renvoi vers la page /mesamis avec le tableau d'amis retourné par la requête précédente
+            res.redirect("/accueil");
         }
+        ssn.photosamis = result;
+        res.render('mesamis'); // Renvoi vers la page d'accueil avec le tableau d'images retourné par la requête précédente
     })
 });
 
 // Méthode GET de la page Mesinformations
 app.get('/mesinformations', function (req, res) {
     app.use(express.static(__dirname+'/ressources'));
-    con.query("SELECT * FROM user where name='"+ssn.user.name+"'", function(err, result){
+    con.query("SELECT * FROM user WHERE name='"+ssn.user.name+"'", function(err, result){
     if(err){ 
         res.status(404);
         res.render("accueil", {msg: err, user: ssn.user});
@@ -179,7 +203,7 @@ app.post('/inscription', function(req, res) {
 
         // req.flash('success_msg', 'You are registered and can now login');
         res.status(200);
-        res.redirect('/connexion');
+        res.render('connexion');
     }
 });
 
@@ -300,7 +324,7 @@ function checkFileType(file, cb) {
 // Méthode GET de la page accueil
 app.get('/accueil', (req, res) => {
     //---------------------------- A MODIFIER ----------------------------
-    con.query("SELECT * FROM photos", function(err, result) { // Sélection issue de la bdd de l'ensemble des photos du user connecté + amis 
+    con.query("SELECT * FROM photos WHERE id_user = " + ssn.user.id_user, function(err, result) { // Sélection issue de la bdd de l'ensemble des photos du user connecté + amis 
         if (err) {
             res.status(404);
             res.render("connexion", {msg: err});
@@ -343,6 +367,7 @@ app.post('/upload', (req, res) => {
                 var newPhoto = {
                     title: title,
                     image: image,
+                    id_user: ssn.user.id_user
                 };
                 // Insertion de la photo dans la bdd avec chemin de la photo
                 Photo.createPhoto(newPhoto, function(err, result) {
@@ -355,7 +380,7 @@ app.post('/upload', (req, res) => {
                     };
                 });
 
-                con.query("SELECT * FROM photos", function(err, result) {
+                con.query("SELECT * FROM photos WHERE id_user = " + ssn.user.id_user, function(err, result) {
                     if (err) {
                         res.status(404);
                         res.render("upload", {
@@ -364,11 +389,7 @@ app.post('/upload', (req, res) => {
                         });
                     };
                     res.status(200);
-                    res.render('accueil', {
-                        msg: 'Image publié!',
-                        images: result,
-                        user: ssn.user 
-                    }); // Renvoi vers la page /accueil avec le tableau d'images retournés par la requête précédente
+                    res.redirect("/accueil"); // Renvoi vers la page /accueil avec le tableau d'images retournés par la requête précédente
                 })
             }
         }

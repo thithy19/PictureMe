@@ -1,5 +1,4 @@
 <html>
-<<<<<<< HEAD
 		<head>
 			<title>Mes amis</title>
 			<meta charset='UTF-8'>
@@ -112,65 +111,3 @@
 		<p>© 2017<a style="color:#0a93a6; text-decoration:none;" href="#"></a>.</p>
 		 </footer>
 	</html>
-=======
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script src="/mesamis.js"></script>
-    <script src="http://listjs.com/no-cdn/list.js"></script>
-    <link rel="stylesheet" href="liststyle.css">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="shortcut icon" href="/script/favicon.ico">
-    <link rel="stylesheet" href="/script/styleconnexion.css">
-    <link rel="stylesheet" href="https://getbootstrap.com/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
-
-    <link rel="stylesheet" href="/script/style1.css" />
-
-</head>
-
-<body>
-<div class = "jumbotron">
-    <h1>pIcTuReMe</h1>
-    <h3>Mes amis</h3>
-
-    </div>
-
-    <div class="container">
-        <div id="users">
-
-            <h2 class="form-signin-heading">Qui voulez-vous retrouver ?</h2>
-            <label for="inputAmis" class="sr-only">Nom/Prenom/Adresse mail</label>
-            <input type="text" id="inputAmis" class="form-control" placeholder=" Nom/Prenom/Adresse mail " required autofocus name="amis">
-
-   </div>
-    <div >
-        
-            <% for (var i=0 ; i < friends.length; i++){ %>
-            <div class = "listeAmis" id = "mesAmis" >
-            <p> <a href="/accueil"> <%=  typeof friends[i].name != 'undefined' ? friends[i].name : '' %>  </a>
-                <%= typeof friends[i].mail != 'undefined' ? friends[i].mail : '' %> </p>
-                </div>
-                <br>   
-    <%}%>
-
-    <script>
-$(document).ready(function(){
-  $("#inputAmis").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#mesAmis p").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-  });
-});
-</script>
-     </div>
-
-        <a href="/accueil">Retourner sur le tableau de bord</a>
-
-</body>
-
-</html>
->>>>>>> fc788abd20d586ffaaba846c964e3948463c19ab

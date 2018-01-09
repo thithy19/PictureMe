@@ -2,38 +2,65 @@
 /* Created by Filipe Pina
  * Specific styles of signin, register, component
  */
+
+
 /*
  * General styles
  */
 
-body, html{
-     height: 100%;
- 	background-repeat: no-repeat;
- 	background-color: #d3d3d3;
- 	font-family: 'Oxygen', sans-serif;
+body,
+html {
+    height: 100%;
+    background-repeat: no-repeat;
+    background-color: #d3d3d3;
+    font-family: 'Oxygen', sans-serif;
+    margin-bottom: 200px;
 }
 
-.main{
- 	margin-top: 70px;
+.main {
+    margin-top: 70px;
 }
 
-h1.title { 
-	font-size: 50px;
-	font-family: 'Passion One', cursive; 
-	font-weight: 400; 
+.container .jumbotron,
+.container-fluid .jumbotron {
+    padding-right: 15px;
+    padding-left: 15px;
+    border-radius: 6px;
 }
 
-hr{
-	width: 10%;
-	color: #fff;
+.jumbotron {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    color: inherit;
+    background-color: #007bff;
 }
 
-.form-group{
-	margin-bottom: 15px;
+.listeAmis {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    color: inherit;
+    background-color: #868e96;
 }
 
-label{
-	margin-bottom: 15px;
+h1.title {
+    font-size: 50px;
+    font-family: 'Passion One', cursive;
+    font-weight: 400;
+}
+
+hr {
+    width: 10%;
+    color: #fff;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    margin-bottom: 15px;
 }
 
 input,
@@ -42,8 +69,8 @@ input::-webkit-input-placeholder {
     padding-top: 3px;
 }
 
-.main-login{
- 	background-color: #fff;
+.main-login {
+    background-color: #fff;
     /* shadows and rounded borders */
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
@@ -51,29 +78,40 @@ input::-webkit-input-placeholder {
     -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
     -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-      
-
 }
 
-.main-center{
- 	margin-top: 30px;
- 	margin: 0 auto;
- 	max-width: 330px;
+.main-center {
+    margin-top: 30px;
+    margin: 0 auto;
+    max-width: 330px;
     padding: 40px 40px;
-  
-    
-
 }
 
-.login-button{
-	margin-top: 5px;
+.login-button {
+    margin-top: 5px;
 }
 
-.login-register{
-	font-size: 11px;
-	text-align: center;
+.login-register {
+    font-size: 11px;
+    text-align: center;
 }
 
-.photo{
-       width: 450px;
+.photo {
+    width: 450px;
+}
+
+.mesinfos {
+    margin-left: 260px;
+    background-color: #777;
+    font-size: 20px;
+    text-align: center;
+}
+
+footer,
+html {
+    height: 5%;
+    margin-top: 50px;
+    background-repeat: no-repeat;
+    background-color: #d3d3d3;
+    font-family: 'Oxygen', sans-serif;
 }
